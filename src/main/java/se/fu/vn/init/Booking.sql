@@ -38,12 +38,15 @@ go
 -- bảng appointments
 create table Appointments (
                               appointment_id int identity(1,1) primary key,
+                              customer_id INT NOT NULL,
                               customer_name nvarchar(100) not null,
                               customer_email nvarchar(100) not null,
                               service_id int not null,
                               appointment_time datetime not null,
                               status nvarchar(20) default N'PENDING',
                               created_at datetime default getdate(),
-                              foreign key (service_id) references Services(service_id)
+                              foreign key (service_id) references Services(service_id),
+                              foreign key (customer_id) references Users(user_id)
+
 );
 go
