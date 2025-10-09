@@ -1,6 +1,8 @@
 package se.fu.vn.model;
 
-public class Services {
+import java.io.Serializable;
+
+public class Services implements Serializable {
     private int serviceId;
     private String name;
     private String description;

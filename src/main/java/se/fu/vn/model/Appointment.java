@@ -1,8 +1,9 @@
 package se.fu.vn.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Appointment {
+public class Appointment implements Serializable {
     private int appointmentId;
     private int customerId;
     private String customerName;

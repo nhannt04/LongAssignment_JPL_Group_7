@@ -1,6 +1,8 @@
 package se.fu.vn.model;
 
-public class Users {
+import java.io.Serializable;
+
+public class Users implements Serializable {
     private int userId;
     private String userName;
     private String password;

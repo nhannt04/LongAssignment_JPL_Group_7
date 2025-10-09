@@ -2,6 +2,7 @@ package se.fu.vn.controller;
 
 import se.fu.vn.model.Appointment;
 import se.fu.vn.model.Services;
+import se.fu.vn.model.Users;
 
 import java.security.Provider;
 import java.time.LocalDateTime;
@@ -9,8 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookingManager {
+    private List<Users> users = new ArrayList<>();
     private List<Services> services = new ArrayList<>();
     private List<Appointment> appointments = new ArrayList<>();
+
+    public void setUsers(List<Users> users) {
+        this.users = users;
+    }
+
+    public void setServices(List<Services> services) {
+        this.services = services;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public List<Users> getUsers() {
+        return users;
+    }
+
+    public void addUsers(Users user) {
+        users.add(user);
+    }
+
+    public void deleteUsers(Users user) {
+        users.remove(user);
+    }
+
+    public Users getUser(int id) {
+        for (Users u : users) {
+            if (u.getUserId()==id) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    public void updateUsers(Users user) {
+       Users u = getUser(user.getUserId());
+       u.setUserName(user.getUserName());
+       u.setPassword(user.getPassword());
+       u.setFullName(user.getFullName());
+       users.add(u);
+    }
 
     public List<Services> getServices() {
         return services;

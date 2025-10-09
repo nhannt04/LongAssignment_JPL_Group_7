@@ -1,0 +1,71 @@
+package se.fu.vn.view;
+
+import se.fu.vn.controller.BookingManager;
+import se.fu.vn.model.Users;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class UsersMenu {
+    static void manageUsers(BookingManager bookingManager, Scanner sc) {
+        List<Users> users = bookingManager.getUsers();
+        while (true) {
+            System.out.println("\n--- Quản lý người dùng ---");
+            System.out.println("1. Thêm người dùng");
+            System.out.println("2. Hiển thị danh sách");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn: ");
+            int c;
+            try {
+                String input = sc.nextLine().trim();
+                if (input.isEmpty()) {
+                    System.out.println(" Vui lòng nhập lựa chọn!");
+                    continue;
+                }
+                c = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println(" Vui lòng nhập số hợp lệ!");
+                continue;
+            }
+            if (c == 0) break;
+            switch (c) {
+                case 1:
+                    System.out.print("Nhập ID: ");
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println(" ID phải là số!");
+                        break;
+                    }
+                    System.out.print("Tên đăng nhập: ");
+                    String user = sc.nextLine().trim();
+                    if (user.isEmpty()) {
+                        System.out.println(" Tên đăng nhập không được để trống!");
+                        break;
+                    }
+                    System.out.print("Mật khẩu: ");
+                    String pass = sc.nextLine().trim();
+                    if (pass.isEmpty()) {
+                        System.out.println(" Mật khẩu không được để trống!");
+                        break;
+                    }
+                    System.out.print("Họ tên: ");
+                    String name = sc.nextLine().trim();
+                    if (name.isEmpty()) {
+                        System.out.println(" Họ tên không được để trống!");
+                        break;
+                    }
+                    users.add(new Users(id, user, pass, name));
+                    System.out.println(" Đã thêm!");
+                    break;
+                case 2:
+                    users.forEach(System.out::println);
+                    break;
+                default:
+                    System.out.println(" Sai lựa chọn!");
+                    break;
+            }
+        }
+    }
+}
