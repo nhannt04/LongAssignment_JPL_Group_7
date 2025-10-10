@@ -1,5 +1,7 @@
 package se.fu.vn.model;
 
+import se.fu.vn.enums.Enums;
+
 import java.io.Serializable;
 
 public class Users implements Serializable {
@@ -7,15 +9,17 @@ public class Users implements Serializable {
     private String userName;
     private String password;
     private String fullName;
+    private Enums role;
 
     public Users() {
     }
 
-    public Users(int userId, String userName, String password, String fullName) {
+    public Users(int userId, String userName, String password, String fullName, Enums role) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.fullName = fullName;
+        this.role = role;
     }
 
     public int getUserId() {
@@ -50,6 +54,14 @@ public class Users implements Serializable {
         this.fullName = fullName;
     }
 
+    public Enums getRole() {
+        return role;
+    }
+
+    public void setRole(Enums role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
@@ -57,6 +69,7 @@ public class Users implements Serializable {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

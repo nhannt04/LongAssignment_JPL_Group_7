@@ -1,6 +1,7 @@
 package se.fu.vn.view;
 
 import se.fu.vn.controller.BookingManager;
+import se.fu.vn.enums.Enums;
 import se.fu.vn.model.Users;
 
 import java.util.List;
@@ -56,7 +57,10 @@ public class UsersMenu {
                         System.out.println(" Họ tên không được để trống!");
                         break;
                     }
-                    users.add(new Users(id, user, pass, name));
+                    System.out.print("Vai trò (admin/customer): ");
+                    String roleInput = sc.nextLine().trim();
+                    Enums role = Enums.valueOf(roleInput.toUpperCase());
+                    users.add(new Users(id, user, pass, name, role));
                     System.out.println(" Đã thêm!");
                     break;
                 case 2:

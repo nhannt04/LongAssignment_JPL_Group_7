@@ -11,17 +11,8 @@ import static se.fu.vn.view.UsersMenu.manageUsers;
 
 
 public class Menu {
-    private static Scanner sc = new Scanner(System.in);
-    private static DataManager dataManager = new DataManager();
-    private static BookingManager bookingManager = new BookingManager();
 
-    public static void run() {
-        // Tải dữ liệu khi khởi động
-        bookingManager = dataManager.loadData();
-        if (bookingManager == null) {
-            System.out.println(" Không thể tải dữ liệu, tạo BookingManager mới");
-            bookingManager = new BookingManager();
-        }
+    public static void run(DataManager dataManager,BookingManager bookingManager,Scanner sc) {
         while (true) {
             System.out.println("\n===== QUẢN LÝ BOOKING =====");
             System.out.println("1. Quản lý người dùng");
