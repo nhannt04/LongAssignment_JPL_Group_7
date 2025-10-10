@@ -72,7 +72,8 @@ public class AppointmentMenu {
                         break;
                     }
 
-                    LocalDateTime time = LocalDateTime.now().plusDays(1);
+
+                    LocalDateTime time = DateInputHandle.inputDateHandle();
                     apps.add(new Appointment(id, cusId, name, email, serviceId, time, "PENDING", LocalDateTime.now()));
                     System.out.println(" Lịch hẹn đã được tạo!");
 
