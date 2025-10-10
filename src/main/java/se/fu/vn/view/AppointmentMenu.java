@@ -2,6 +2,8 @@ package se.fu.vn.view;
 
 import se.fu.vn.controller.BookingManager;
 import se.fu.vn.model.Appointment;
+import se.fu.vn.model.Services;
+import se.fu.vn.model.Users;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.Scanner;
 public class AppointmentMenu {
     public static void manageAppointments(BookingManager bookingManager, Scanner sc) {
         List<Appointment> apps = bookingManager.getAppointments();
+        List<Services> services = bookingManager.getServices();
+        List<Users> users = bookingManager.getUsers();
         while (true) {
             System.out.println("\n--- Quản lý lịch hẹn ---");
             System.out.println("1. Tạo lịch hẹn");
@@ -31,22 +35,23 @@ public class AppointmentMenu {
             if (c == 0) break;
             switch (c) {
                 case 1:
-                    System.out.print("ID lịch hẹn: ");
-                    int id;
-                    try {
-                        id = Integer.parseInt(sc.nextLine().trim());
-                    } catch (NumberFormatException e) {
-                        System.out.println(" ID lịch hẹn phải là số!");
-                        break;
-                    }
+                    int id = apps.size() + 1;
+                    System.out.println("\n Danh sách người dùng:");
+                    bookingManager.getUsers().forEach(System.out::println);
 
-                    System.out.print("ID khách hàng: ");
                     int cusId;
-                    try {
-                        cusId = Integer.parseInt(sc.nextLine().trim());
-                    } catch (NumberFormatException e) {
-                        System.out.println(" ID khách hàng phải là số!");
-                        break;
+                    while (true) {
+                        System.out.print("ID khách hàng: ");
+                        try {
+                            cusId = Integer.parseInt(sc.nextLine().trim());
+                            if (!bookingManager.findUser(cusId, users)) {
+                                System.out.println("❌ Không tìm thấy khách hàng có ID này. Nhập lại!");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("❌ ID khách hàng phải là số! Nhập lại!");
+                        }
                     }
 
                     System.out.print("Tên KH: ");
@@ -63,13 +68,22 @@ public class AppointmentMenu {
                         break;
                     }
 
-                    System.out.print("ID dịch vụ: ");
+                    System.out.println("\n Danh sách dịch vụ:");
+                    bookingManager.getServices().forEach(System.out::println);
+
                     int serviceId;
-                    try {
-                        serviceId = Integer.parseInt(sc.nextLine().trim());
-                    } catch (NumberFormatException e) {
-                        System.out.println(" ID dịch vụ phải là số!");
-                        break;
+                    while (true) {
+                        System.out.print("ID dịch vụ: ");
+                        try {
+                            serviceId = Integer.parseInt(sc.nextLine().trim());
+                            if (!bookingManager.findService(serviceId, services)) {
+                                System.out.println("❌ Không tìm thấy dịch vụ có ID này. Nhập lại!");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("❌ ID dịch vụ phải là số! Nhập lại!");
+                        }
                     }
 
 

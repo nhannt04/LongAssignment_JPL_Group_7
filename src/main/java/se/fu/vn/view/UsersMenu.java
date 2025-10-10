@@ -31,14 +31,7 @@ public class UsersMenu {
             if (c == 0) break;
             switch (c) {
                 case 1:
-                    System.out.print("Nhập ID: ");
-                    int id;
-                    try {
-                        id = Integer.parseInt(sc.nextLine().trim());
-                    } catch (NumberFormatException e) {
-                        System.out.println(" ID phải là số!");
-                        break;
-                    }
+                    int id = users.size()+1;
                     System.out.print("Tên đăng nhập: ");
                     String user = sc.nextLine().trim();
                     if (user.isEmpty()) {

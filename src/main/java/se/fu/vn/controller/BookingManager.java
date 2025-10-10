@@ -4,7 +4,6 @@ import se.fu.vn.model.Appointment;
 import se.fu.vn.model.Services;
 import se.fu.vn.model.Users;
 
-import java.security.Provider;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,5 +113,23 @@ public class BookingManager {
         appointment.setStatus(appointmentNew.getStatus());
         appointment.setCreatedAt(LocalDateTime.now());
         appointments.add(appointment);
+    }
+
+    public boolean findUser(int id, List<Users> users) {
+        for (Users user : users) {
+            if (user.getUserId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findService(int id, List<Services> services) {
+        for (Services service : services) {
+            if (service.getServiceId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

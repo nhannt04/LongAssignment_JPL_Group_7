@@ -30,14 +30,7 @@ public class ServicesMenu {
             if (c == 0) break;
             switch (c) {
                 case 1: {
-                    System.out.print("ID dịch vụ: ");
-                    int id;
-                    try {
-                        id = Integer.parseInt(sc.nextLine().trim());
-                    } catch (NumberFormatException e) {
-                        System.out.println(" ID phải là số!");
-                        break;
-                    }
+                    int id = services.size()+1;
 
                     System.out.print("Tên: ");
                     String name = sc.nextLine().trim();
@@ -83,7 +76,7 @@ public class ServicesMenu {
                     services.forEach(System.out::println);
                     break;
                 default:
-                    System.out.println(" Sai lựa chọn!");
+                    System.out.println("Sai lựa chọn!");
                     break;
             }
         }
