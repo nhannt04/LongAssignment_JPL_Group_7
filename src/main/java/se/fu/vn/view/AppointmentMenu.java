@@ -101,4 +101,82 @@ public class AppointmentMenu {
             }
         }
     }
+
+
+    public static void bookingAppointments(BookingManager bookingManager, Scanner sc, Users users) {
+        List<Appointment> apps = bookingManager.getAppointments();
+        List<Services> services = bookingManager.getServices();
+        while (true) {
+            System.out.println("\n--- Quản lí lịch hẹn ---");
+            System.out.println("1. Tạo lịch hẹn");
+            System.out.println("2. Hiển thị lịch hẹn");
+            System.out.println("0. Quay lại");
+            System.out.print("Chọn: ");
+            int c;
+            try {
+                String input = sc.nextLine().trim();
+                if (input.isEmpty()) {
+                    System.out.println(" Vui lòng nhập lựa chọn!");
+                    continue;
+                }
+                c = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println(" Vui lòng nhập số hợp lệ!");
+                continue;
+            }
+            if (c == 0) break;
+            switch (c) {
+                case 1:
+                    int id = apps.size() + 1;
+
+                    int cusId = users.getUserId();
+
+
+                    System.out.print("Tên KH: ");
+                    String name = sc.nextLine().trim();
+                    if (name.isEmpty()) {
+                        System.out.println(" Tên khách hàng không được để trống!");
+                        break;
+                    }
+
+                    System.out.print("Email KH: ");
+                    String email = sc.nextLine().trim();
+                    if (email.isEmpty()) {
+                        System.out.println(" Email không được để trống!");
+                        break;
+                    }
+
+                    System.out.println("\n Danh sách dịch vụ:");
+                    bookingManager.getServices().forEach(System.out::println);
+
+                    int serviceId;
+                    while (true) {
+                        System.out.print("ID dịch vụ: ");
+                        try {
+                            serviceId = Integer.parseInt(sc.nextLine().trim());
+                            if (!bookingManager.findService(serviceId, services)) {
+                                System.out.println("❌ Không tìm thấy dịch vụ có ID này. Nhập lại!");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("❌ ID dịch vụ phải là số! Nhập lại!");
+                        }
+                    }
+
+
+                    LocalDateTime time = DateInputHandle.inputDateHandle();
+                    apps.add(new Appointment(id, cusId, name, email, serviceId, time, "PENDING", LocalDateTime.now()));
+                    System.out.println(" Lịch hẹn đã được tạo!");
+
+                    break;
+                case 2:
+                    bookingManager.getAppointments(users,apps);
+                    break;
+                default:
+                    System.out.println(" Sai lựa chọn!");
+                    break;
+            }
+        }
+    }
 }

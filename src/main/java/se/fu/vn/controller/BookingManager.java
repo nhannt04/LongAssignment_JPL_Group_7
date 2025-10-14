@@ -132,4 +132,12 @@ public class BookingManager {
         }
         return false;
     }
+
+    public void getAppointments(Users user, List<Appointment> appointments) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getCustomerId() == user.getUserId()) {
+                System.out.println(appointment);
+            }
+        }
+    }
 }

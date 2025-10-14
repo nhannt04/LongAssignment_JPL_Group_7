@@ -20,7 +20,7 @@ public class Menu {
             System.out.println("3. Quản lý lịch hẹn");
             System.out.println("4. Lưu dữ liệu");
             System.out.println("5. Xem toàn bộ dữ liệu");
-            System.out.println("0. Thoát");
+            System.out.println("0. Đăng xuất");
             System.out.print("Chọn: ");
 
             int choice;
@@ -59,8 +59,7 @@ public class Menu {
                     display(bookingManager);
                     break;
                 case 0:
-                    System.out.println(" Tạm biệt!");
-                    return;
+                    Login.run();
                 default:
                     System.out.println(" Lựa chọn không hợp lệ!");
                     break;

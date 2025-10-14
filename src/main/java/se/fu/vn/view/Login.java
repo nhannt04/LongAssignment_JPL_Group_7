@@ -40,6 +40,8 @@ public class Login {
         System.out.println("✅ Đăng nhập thành công! Xin chào, " + user.getFullName());
         if(user.getRole()== Enums.ADMIN){
             Menu.run(dataManager,bookingManager,sc);
+        }else{
+            MenuCustomer.run(dataManager,bookingManager,sc, user);
         }
     }
 }
