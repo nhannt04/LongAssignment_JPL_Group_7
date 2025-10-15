@@ -1,9 +1,11 @@
 package se.fu.vn.view;
 
 import se.fu.vn.controller.BookingManager;
+import se.fu.vn.dao.UserDao;
 import se.fu.vn.enums.Enums;
 import se.fu.vn.model.Users;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,8 +55,15 @@ public class UsersMenu {
                     System.out.print("Vai trò (admin/customer): ");
                     String roleInput = sc.nextLine().trim();
                     Enums role = Enums.valueOf(roleInput.toUpperCase());
-                    users.add(new Users(id, user, pass, name, role));
-                    System.out.println(" Đã thêm!");
+                    Users newUser  = new Users(id, user, pass, name, role);
+                    users.add(newUser);
+                    UserDao dao = new UserDao();
+                    try {
+                        int generatedId = dao.insert(newUser);
+                        System.out.println(" ✅ Đã thêm vào database với ID: " + generatedId);
+                    } catch (SQLException e) {
+                        System.out.println(" ❌ Lỗi khi lưu xuống database: " + e.getMessage());
+                    }
                     break;
                 case 2:
                     users.forEach(System.out::println);

@@ -1,9 +1,15 @@
 package se.fu.vn.controller;
 
+import se.fu.vn.connection.DBConnect;
+import se.fu.vn.dao.AppointmentDao;
+import se.fu.vn.dao.ServiceDao;
+import se.fu.vn.dao.UserDao;
 import se.fu.vn.model.Appointment;
 import se.fu.vn.model.Services;
 import se.fu.vn.model.Users;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +18,10 @@ public class BookingManager {
     private List<Users> users = new ArrayList<>();
     private List<Services> services = new ArrayList<>();
     private List<Appointment> appointments = new ArrayList<>();
+    
+    private final UserDao userDao = new UserDao();
+    private final ServiceDao serviceDao = new ServiceDao();
+    private final AppointmentDao appointmentDao = new AppointmentDao();
 
     public void setUsers(List<Users> users) {
         this.users = users;
@@ -139,5 +149,82 @@ public class BookingManager {
                 System.out.println(appointment);
             }
         }
+    }
+    
+    // Synchronized method to check for appointment conflicts
+    public synchronized boolean hasAppointmentConflict(int serviceId, LocalDateTime appointmentTime) {
+        try (Connection conn = DBConnect.getConnection()) {
+            return appointmentDao.hasConflict(conn, serviceId, appointmentTime, appointmentTime.plusMinutes(30));
+        } catch (SQLException e) {
+            System.err.println("Error checking appointment conflict: " + e.getMessage());
+            return true; // Return true to prevent booking if there's an error
+        }
+    }
+    
+    // Synchronized method to create appointment with conflict checking
+    public synchronized boolean createAppointment(Appointment appointment) {
+        try (Connection conn = se.fu.vn.connection.DBConnect.getConnection()) {
+            // Check for conflicts first
+            if (hasAppointmentConflict(appointment.getServiceId(), appointment.getAppointmentDate())) {
+                System.out.println("Time slot is already booked. Please choose another time.");
+                return false;
+            }
+            
+            // Create appointment in database
+            int appointmentId = appointmentDao.insert(appointment);
+            if (appointmentId > 0) {
+                appointment.setAppointmentId(appointmentId);
+                appointments.add(appointment);
+                System.out.println("✅ Appointment created successfully with ID: " + appointmentId);
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Error creating appointment: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Load data from database
+    public void loadDataFromDatabase() {
+        try {
+            users = userDao.findAll();
+            services = serviceDao.findAll();
+            appointments = appointmentDao.findAll();
+            System.out.println("Data loaded from database successfully");
+        } catch (Exception e) {
+            System.err.println("Error loading data from database: " + e.getMessage());
+        }
+    }
+    
+    // Update appointment status
+    public synchronized boolean updateAppointmentStatus(int appointmentId, String newStatus) {
+        try {
+            appointmentDao.updateStatus(appointmentId, newStatus);
+            for (Appointment appointment : appointments) {
+                if (appointment.getAppointmentId() == appointmentId) {
+                    appointment.setStatus(newStatus);
+                    break;
+                }
+            }
+            System.out.println("Appointment status updated to: " + newStatus);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error updating appointment status: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    // Getter methods for DAO objects
+    public ServiceDao getServiceDao() {
+        return serviceDao;
+    }
+    
+    public UserDao getUserDao() {
+        return userDao;
+    }
+    
+    public AppointmentDao getAppointmentDao() {
+        return appointmentDao;
     }
 }

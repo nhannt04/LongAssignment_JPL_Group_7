@@ -2,10 +2,10 @@ package se.fu.vn.dao;
 
 
 import se.fu.vn.connection.DBConnect;
-import se.fu.vn.enums.Enums;
+
 import se.fu.vn.model.Appointment;
 
-import java.io.ObjectInputFilter;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +14,8 @@ import java.util.List;
 public class AppointmentDao {
 
     public List<Appointment> findAll() {
-        String sql = "SELECT appointment_id, customer_id, customer_name, customer_email, service_id, appointment_time, status FROM Appointments ORDER BY appointment_time";
+        String sql = "SELECT appointment_id, customer_id, customer_name, customer_email, service_id, appointment_time, status, created_at FROM Appointments ORDER BY appointment_time";
+
         List<Appointment> out = new ArrayList<>();
         try (Connection c = DBConnect.getConnection();
              Statement s = c.createStatement();
@@ -72,7 +73,7 @@ public class AppointmentDao {
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, serviceId);
-            ps.setString(2, "Canceled");
+            ps.setString(2, "CANCELLED");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     LocalDateTime existStart = rs.getTimestamp("appointment_time").toLocalDateTime();

@@ -5,15 +5,16 @@ create table Users (
                        user_id int identity(1,1) primary key,
                        username nvarchar(50) not null unique,
                        password nvarchar(100) not null,
-                       fullname nvarchar(100)
+                       fullname nvarchar(100),
+                       role nvarchar(20) default 'CUSTOMER'
 );
 go
 
 -- thêm admin mặc định
-insert into Users (username, password, fullname)
+insert into Users (username, password, fullname, role)
 values
-    ('admin', '123456', 'System Administrator'),
-    ('Minh', '123456', 'Minh Smily');
+    ('admin', '123456', 'System Administrator', 'ADMIN'),
+    ('Minh', '123456', 'Minh Smily', 'CUSTOMER');
 go
 
 -- bảng services

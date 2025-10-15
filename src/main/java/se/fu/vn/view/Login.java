@@ -14,12 +14,9 @@ public class Login {
     private static BookingManager bookingManager;
 
     public static void run() {
-        // tải dữ liệu
-        bookingManager = dataManager.loadData();
-        if (bookingManager == null) {
-            System.out.println("⚠ Không thể tải dữ liệu, tạo mới BookingManager...");
-            bookingManager = new BookingManager();
-        }
+        // tải dữ liệu từ database
+        bookingManager = new BookingManager();
+        bookingManager.loadDataFromDatabase();
 
         System.out.println("===== ĐĂNG NHẬP HỆ THỐNG =====");
 
@@ -33,7 +30,7 @@ public class Login {
             user = LoginUsers.login(username,password,bookingManager);
 
             if (user == null) {
-                System.out.println("❌ Sai tên đăng nhập hoặc mật khẩu. Vui lòng thử lại!\n");
+                System.out.println("Sai tên đăng nhập hoặc mật khẩu. Vui lòng thử lại!\n");
             }
         }
 
