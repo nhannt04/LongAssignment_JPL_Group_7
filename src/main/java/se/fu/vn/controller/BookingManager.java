@@ -150,6 +150,36 @@ public class BookingManager {
             }
         }
     }
+
+    public void getAppointmentsbByUserId(int userId) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getCustomerId() == userId) {
+                System.out.println(appointment);
+            }
+        }
+    }
+
+    public void updateTimeAppointment(int appointmentId, LocalDateTime newTime) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentId() == appointmentId) {
+                appointmentDao.updateTimeAppointment(appointmentId, newTime);
+                break;
+            }
+        }
+    }
+
+    public Appointment getAppointmentById(int appointmentId) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentId() == appointmentId) {
+                return appointment;
+            }
+        }
+        return null;
+    }
+
+    public List<Appointment> getAppointmentsByUserId(int userId) {
+        return appointmentDao.findAllByUser(userId);
+    }
     
     // Synchronized method to check for appointment conflicts
     public synchronized boolean hasAppointmentConflict(int serviceId, LocalDateTime appointmentTime) {

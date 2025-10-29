@@ -3,9 +3,11 @@ package se.fu.vn.view;
 import se.fu.vn.controller.BookingManager;
 import se.fu.vn.dao.UserDao;
 import se.fu.vn.enums.Enums;
+import se.fu.vn.model.Appointment;
 import se.fu.vn.model.Users;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 

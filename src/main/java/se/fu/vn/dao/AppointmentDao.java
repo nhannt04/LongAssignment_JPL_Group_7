@@ -36,6 +36,31 @@ public class AppointmentDao {
         return out;
     }
 
+
+    public List<Appointment> findAllByUser(int userId) {
+        String sql = "SELECT appointment_id, customer_id, customer_name, customer_email, service_id, appointment_time, status, created_at FROM Appointments where customer_id = ? ORDER BY appointment_time";
+
+        List<Appointment> out = new ArrayList<>();
+        try (Connection c = DBConnect.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql);) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                out.add(new Appointment(
+                        rs.getInt("appointment_id"),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_email"),
+                        rs.getInt("service_id"),
+                        rs.getTimestamp("appointment_time").toLocalDateTime(),
+                        rs.getString("status"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
+                ));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return out;
+    }
+
     public void updateStatus(int appointmentId, String newStatus) {
         String sql = "UPDATE Appointments SET status = ? WHERE appointment_id = ?";
         try (Connection c = DBConnect.getConnection();
@@ -45,6 +70,17 @@ public class AppointmentDao {
              ps.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
     }
+
+    public void updateTimeAppointment(int appointmnetId, LocalDateTime newTime) {
+        String sql = "Update Appointments SET appointment_time = ? WHERE appointment_id = ?";
+        try (Connection conn = DBConnect.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(newTime));
+            ps.setInt(2, appointmnetId);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
 
     // Insert và trả về generated id
     public int insert(Appointment app) throws SQLException {
@@ -65,6 +101,8 @@ public class AppointmentDao {
         }
         return -1;
     }
+
+
 
 
     public boolean hasConflict(Connection conn, int serviceId, LocalDateTime newStart, LocalDateTime newEnd) throws SQLException {

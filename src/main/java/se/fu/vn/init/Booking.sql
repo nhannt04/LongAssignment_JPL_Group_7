@@ -35,7 +35,9 @@ values
     (N'Shaving', N'Beard shaving and grooming', 20, 80000),
     (N'Massage', N'Shoulder & head massage', 45, 150000);
 go
+select * from Appointments
 
+SELECT appointment_id, customer_id, customer_name, customer_email, service_id, appointment_time, status, created_at FROM Appointments where customer_id = 3 ORDER BY appointment_time
 -- bảng appointments
 create table Appointments (
                               appointment_id int identity(1,1) primary key,

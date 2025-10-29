@@ -26,7 +26,6 @@ public class Login {
             String username = sc.nextLine();
             System.out.print("Mật khẩu: ");
             String password = sc.nextLine();
-
             user = LoginUsers.login(username,password,bookingManager);
 
             if (user == null) {
